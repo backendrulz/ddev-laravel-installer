@@ -85,6 +85,26 @@ header "Installing Laravel 12... 📦✨"
 ddev composer create-project "laravel/laravel:^12" --no-interaction
 success "Laravel installed."
 
+# 6a. Install Pest (Optional)
+header "Pest Testing Framework Setup 🧪"
+echo -e "${YELLOW}Do you want to install Pest (and remove PHPUnit)? (y/n)${RESET} "
+read -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    info "Removing PHPUnit..."
+    ddev composer remove phpunit/phpunit
+
+    info "Installing Pest..."
+    ddev composer require pestphp/pest --dev --with-all-dependencies
+
+    info "Initializing Pest..."
+    ddev exec ./vendor/bin/pest --init
+
+    success "Pest installed and initialized."
+else
+    info "Skipping Pest installation."
+fi
+
 # 7. Launch Project
 header "All set! Launching the site... 🚀"
 info "Project URL: https://$PROJECT_NAME.ddev.site"

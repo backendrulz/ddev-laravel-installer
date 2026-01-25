@@ -9,6 +9,7 @@ Created by **[@backendrulz](https://github.com/backendrulz)**.
 ## 🚀 Features
 
 - **Automated Setup:** Creates the folder, configures DDEV, and installs Laravel.
+- **Optional Pest Setup:** Prompts to install Pest, remove PHPUnit, and initialize the testing framework.
 - **Interactive:** Prompts for the project name (defaults to `my-laravel-site`).
 - **Error Handling:** Strict error checking to prevent partial installs.
 - **Stylish Output:** Color-coded logs and status updates for a better CLI experience.
@@ -77,7 +78,8 @@ This script automates the standard DDEV + Laravel setup workflow:
 3. **Config:** Initializes a DDEV config for Laravel (`--project-type=laravel`).
 4. **Start:** Spins up the Docker containers.
 5. **Install:** Uses `ddev composer` to install Laravel 12.
-6. **Launch:** Automatically opens your new local site in the browser.
+6. **Pest (Optional):** Prompts to swap PHPUnit for the Pest testing framework.
+7. **Launch:** Automatically opens your new local site in the browser.
 
 ## 🤝 Contributing
 
