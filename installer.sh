@@ -70,7 +70,7 @@ success "Directory created and accessed."
 
 # 4. Configure DDEV
 header "Configuring DDEV 🐳"
-ddev config --project-type=laravel --docroot=public --create-docroot
+ddev config --project-type=laravel --docroot=public
 success "DDEV configuration complete."
 
 # 5. Start DDEV
