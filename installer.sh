@@ -87,13 +87,10 @@ success "Laravel installed."
 
 # 6a. Install Pest (Optional)
 header "Pest Testing Framework Setup 🧪"
-echo -e "${YELLOW}Do you want to install Pest (and remove PHPUnit)? (y/n)${RESET} "
+echo -e "${YELLOW}Do you want to install Pest? (y/n)${RESET} "
 read -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    info "Removing PHPUnit..."
-    ddev composer remove phpunit/phpunit
-
     info "Installing Pest..."
     ddev composer require pestphp/pest --dev --with-all-dependencies
 
