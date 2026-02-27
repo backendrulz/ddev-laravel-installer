@@ -45,6 +45,7 @@ WITH_GIT=false
 WITH_PEST=false
 WITH_BUN=false
 WITH_LARASTAN=false
+WITH_RECTOR=false
 PROJECT_NAME=""
 
 usage() {
@@ -54,6 +55,7 @@ usage() {
     echo -e "  ${GREEN}--pest${RESET}     Install Pest testing framework"
     echo -e "  ${GREEN}--bun${RESET}      Use Bun runtime (installs ddev-bun)"
     echo -e "  ${GREEN}--larastan${RESET} Install Larastan (PHPStan for Laravel)"
+    echo -e "  ${GREEN}--rector${RESET}   Install Rector for Laravel"
     echo
 }
 
@@ -64,6 +66,7 @@ while [[ "$#" -gt 0 ]]; do
         --pest) WITH_PEST=true ;;
         --bun) WITH_BUN=true ;;
         --larastan) WITH_LARASTAN=true ;;
+        --rector) WITH_RECTOR=true ;;
         -h|--help) usage; exit 0 ;;
         -*) error "Unknown option: $1" ;;
         *) 
@@ -168,13 +171,23 @@ if [ "$WITH_LARASTAN" = true ]; then
     success "Larastan installed."
 fi
 
-# 11. Restart and Run Scripts
+# 11. Install Rector
+if [ "$WITH_RECTOR" = true ]; then
+    header "Installing Rector..."
+    ddev composer require --dev driftingly/rector-laravel
+    
+    info "Copying Rector configuration..."
+    cp "$SCRIPT_DIR/rector.php" ./rector.php
+    success "Rector installed."
+fi
+
+# 12. Restart and Run Scripts
 header "Restarting and running post-install scripts..."
 ddev restart
 ddev composer run-script post-root-package-install
 ddev composer run-script post-create-project-cmd
 
-# 12. Launch
+# 13. Launch
 header "All set! Launching the site... 🚀"
 info "Project URL: https://$PROJECT_NAME.ddev.site"
 ddev launch

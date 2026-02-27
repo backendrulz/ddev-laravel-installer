@@ -9,7 +9,7 @@ Created by **[@backendrulz](https://github.com/backendrulz)**.
 ## 🚀 Features
 
 - **Automated Setup:** Creates the folder, configures DDEV, and installs Laravel using the official installer.
-- **Customizable:** Optional flags to enable Git, Pest, Bun, or Larastan.
+- **Customizable:** Optional flags to enable Git, Pest, Bun, Larastan, or **Rector**.
 - **Interactive:** Prompts for the mandatory project name and displays available options if run without arguments.
 - **Error Handling:** Strict error checking to prevent partial installs.
 - **Stylish Output:** Color-coded logs and status updates for a better CLI experience.
@@ -44,7 +44,7 @@ Before running this script, ensure you have the following installed:
 
    **With Arguments:**
    ```bash
-   ./installer.sh my-project --git --pest --bun --larastan
+   ./installer.sh my-project --git --pest --bun --larastan --rector
    ```
 
 ### Options
@@ -56,6 +56,7 @@ Before running this script, ensure you have the following installed:
 | `--pest`   | Install the Pest testing framework.              |
 | `--bun`    | Use Bun instead of Node (installs Bun add-on).   |
 | `--larastan`| Install Larastan (PHPStan for Laravel).         |
+| `--rector`  | Install Rector for Laravel.                     |
 
 ## 🌍 Global Installation (Optional)
 
@@ -95,7 +96,8 @@ This script automates the setup workflow:
 6. **Install:** Executes `laravel new temp` inside the container with your chosen options (`--git`, `--pest`, `--bun`, `--boost`).
 7. **Sync:** Moves files from the temporary install directory to the root and cleans up.
 8. **Larastan:** (Optional) Installs Larastan and configures `phpstan.neon`.
-9. **Finalize:** Restarts DDEV, runs Composer post-install scripts, and launches the site.
+9. **Rector:** (Optional) Installs Rector and configures `rector.php` for Laravel best practices.
+10. **Finalize:** Restarts DDEV, runs Composer post-install scripts, and launches the site.
 
 ## 🤝 Contributing
 
