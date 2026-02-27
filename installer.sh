@@ -37,10 +37,14 @@ set -euo pipefail
 # Trap for unexpected errors
 trap 'echo -e "\n${RED}💥 Script failed unexpectedly on line $LINENO.${RESET}";' ERR
 
+# Get script directory
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+
 # --- Argument Parsing ---
 WITH_GIT=false
 WITH_PEST=false
 WITH_BUN=false
+WITH_LARASTAN=false
 PROJECT_NAME=""
 
 usage() {
@@ -49,6 +53,7 @@ usage() {
     echo -e "  ${GREEN}--git${RESET}      Initialize Git repository"
     echo -e "  ${GREEN}--pest${RESET}     Install Pest testing framework"
     echo -e "  ${GREEN}--bun${RESET}      Use Bun runtime (installs ddev-bun)"
+    echo -e "  ${GREEN}--larastan${RESET} Install Larastan (PHPStan for Laravel)"
     echo
 }
 
@@ -58,6 +63,7 @@ while [[ "$#" -gt 0 ]]; do
         --git) WITH_GIT=true ;;
         --pest) WITH_PEST=true ;;
         --bun) WITH_BUN=true ;;
+        --larastan) WITH_LARASTAN=true ;;
         -h|--help) usage; exit 0 ;;
         -*) error "Unknown option: $1" ;;
         *) 
@@ -152,13 +158,23 @@ ddev exec 'rsync -rltgopD temp/ ./ && rm -rf temp'
 # Cleanup Dockerfile and .env as per snippet
 rm -f .ddev/web-build/Dockerfile.laravel .env
 
-# 10. Restart and Run Scripts
+# 10. Install Larastan
+if [ "$WITH_LARASTAN" = true ]; then
+    header "Installing Larastan..."
+    ddev composer require --dev "larastan/larastan:^3.0"
+    
+    info "Copying configuration..."
+    cp "$SCRIPT_DIR/phpstan.neon" ./phpstan.neon
+    success "Larastan installed."
+fi
+
+# 11. Restart and Run Scripts
 header "Restarting and running post-install scripts..."
 ddev restart
 ddev composer run-script post-root-package-install
 ddev composer run-script post-create-project-cmd
 
-# 11. Launch
+# 12. Launch
 header "All set! Launching the site... 🚀"
 info "Project URL: https://$PROJECT_NAME.ddev.site"
 ddev launch
