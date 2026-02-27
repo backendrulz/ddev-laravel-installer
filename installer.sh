@@ -161,7 +161,13 @@ ddev exec 'rsync -rltgopD temp/ ./ && rm -rf temp'
 # Cleanup Dockerfile and .env as per snippet
 rm -f .ddev/web-build/Dockerfile.laravel .env
 
-# 10. Install Larastan
+# 10. Restart and Run Scripts
+header "Restarting and running post-install scripts..."
+ddev restart
+ddev composer run-script post-root-package-install
+ddev composer run-script post-create-project-cmd
+
+# 11. Install Larastan
 if [ "$WITH_LARASTAN" = true ]; then
     header "Installing Larastan..."
     ddev composer require --dev "larastan/larastan:^3.0"
@@ -171,7 +177,7 @@ if [ "$WITH_LARASTAN" = true ]; then
     success "Larastan installed."
 fi
 
-# 11. Install Rector
+# 12. Install Rector
 if [ "$WITH_RECTOR" = true ]; then
     header "Installing Rector..."
     ddev composer require --dev driftingly/rector-laravel
@@ -180,12 +186,6 @@ if [ "$WITH_RECTOR" = true ]; then
     cp "$SCRIPT_DIR/rector.php" ./rector.php
     success "Rector installed."
 fi
-
-# 12. Restart and Run Scripts
-header "Restarting and running post-install scripts..."
-ddev restart
-ddev composer run-script post-root-package-install
-ddev composer run-script post-create-project-cmd
 
 # 13. Launch
 header "All set! Launching the site... 🚀"
